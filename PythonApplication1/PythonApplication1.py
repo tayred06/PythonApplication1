@@ -11,6 +11,7 @@ from tkinter import messagebox
 window = tk.Tk()
 
 mot = ""
+nbErreur = 0
 
 
 mydb = mysql.connector.connect(
@@ -38,7 +39,7 @@ mycursor.execute("SELECT `mot` FROM `mots` WHERE id = " + str(random.randint(0, 
 mot = mycursor.fetchone()
 mot = mot[0]
 
-nbErreur = 0
+
 
 motATrouver = []
 for x in list(mot):
@@ -64,25 +65,33 @@ def newGame():
 
 
 def partie(lettre):
-    if (mot == ""):
-        print("perdu")
+    trouver = 0
+    global nbErreur
+    if (nbErreur != 3):
+        print(nbErreur)
+        if (mot == ""):
+            print("perdu") 
+        else:
+            print(lettre)
+            input_Lettre.delete(0,"end")
+            print(mot)
+            nbLettre = 0
+            for x in list(mot):
+                nbLettre = nbLettre + 1
+             
+                if (x == lettre):
+                    motATrouver[nbLettre - 1] = lettre
+                    var_lettreTrouver.set(str( motATrouver))
+                    #ajouter le if si le mot est trouver
+                    if (list(mot) == motATrouver):
+                        print("GG")
+                else:
+                    trouver = 1
+            if(trouver == 1):
+                nbErreur = nbErreur + 1
+                print("pasGG")
     else:
-        print(lettre)
-        input_Lettre.delete(0,"end")
-        print(mot)
-        nbLettre = 0
-        for x in list(mot):
-            nbLettre = nbLettre + 1
-            if (x == lettre):
-                print("trouver")
-                motATrouver[nbLettre - 1] = lettre
-                var_lettreTrouver.set(str( motATrouver))
-                #ajouter le if si le mot est trouver
-                if (list(mot) == motATrouver):
-                    print("GG")
-            else:
-                #nbErreur = nbErreur + 1
-                print("nop")
+        print("perdu")
 
 
 
